@@ -1,0 +1,45 @@
+<class name="TestClass">
+	<annotations>
+		<annotation name="lombok.Data"></annotation>
+		<annotation name="javax.persistence.MappedSuperclass"></annotation>
+		<annotation name="javax.persistence.Inheritance">
+			<property name="strategy">javax.persistence.InheritanceType.TABLE_PER_CLASS</property>
+		</annotation>
+	</annotations>
+	<fields>
+		<field name="id" type="Long">
+			<annotations>
+				<annotation name="Id"></annotation>
+				<annotation name="GeneratedValue">
+					<property name="strategy">GenerationType.AUTO</property>			
+				</annotation>
+				<annotation name="Column">
+					<property name="name">id</property>			
+				</annotation>
+			</annotations>
+		</field>
+		<field name="createdDate" type="Date">
+			<annotations>
+				<annotation name="CreatedDate"></annotation>
+				<annotation name="TemporalType">
+					<property name="TemporalType.TIMESTAMP"></property>			
+				</annotation>
+			</annotations>
+		</field>
+		<field name="deletedDate" type="Date">
+			<annotations>
+				<annotation name="DeletedDate"></annotation>
+				<annotation name="TemporalType">
+					<property name="TemporalType.TIMESTAMP"></property>			
+				</annotation>
+			</annotations>
+		</field>
+		<field name="active" type="Boolean">
+			<annotations>
+				<annotation name="Column">
+					<property name="name">active</property>			
+				</annotation>
+			</annotations>
+		</field>
+	</fields>
+</class>
