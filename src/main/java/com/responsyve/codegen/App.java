@@ -20,9 +20,9 @@ import com.responsyve.codegen.generator.XMLFileParser;
 public class App {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		
-		String inputfolder = "C:/Users/1370096/eworkspace/restcrudgenerator/testFiles";
-		String outfolder = "C:/Users/1370096/eworkspace/restcrudgenerator/generated";
+
+		String inputfolder = "C:/Users/1370096/Documents/eworkspace/restcrudgenerator/testFiles";
+		String outfolder = "C:/Users/1370096/Documents/eworkspace/restcrudgenerator/generated";
 		Files.list(Paths.get(inputfolder)).forEach(file -> {
 			CodeWriter writer = new CodeWriter(outfolder);
 			XMLFileParser parser = new XMLFileParser(file.toString());
