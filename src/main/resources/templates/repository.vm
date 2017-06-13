@@ -1,0 +1,21 @@
+package $package.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import $package.domain.$class;
+
+@Transactional
+public interface $classRepository extends extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+
+	$class findOne(Long id);
+
+	List<$class> findAll();
+	
+	void deleteByIdIn(ArrayList<Long> ids);
+}

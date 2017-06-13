@@ -19,11 +19,8 @@ public class XMLFileParser {
 
 	private String fileLocation;
 
-	private CodeWriter writer;
-
-	public XMLFileParser(String fileLocation, CodeWriter writer) {
+	public XMLFileParser(String fileLocation) {
 		this.fileLocation = fileLocation;
-		this.writer = writer;
 	}
 	
 	//Testing
@@ -94,17 +91,13 @@ public class XMLFileParser {
         um.marshal(cgclass, System.out);
 	}
 	
-	public void parseFile() throws JAXBException {
+	public CodeGenClass parseFile() throws JAXBException {
 		
 		JAXBContext jb = JAXBContext.newInstance(CodeGenClass.class);
 		Unmarshaller um = jb.createUnmarshaller();
-		CodeGenClass genClass = (CodeGenClass) um.unmarshal(new File(fileLocation));
+		CodeGenClass genClass = (CodeGenClass) um.unmarshal(new File(fileLocation));		
 		
-		writer.setCgclass(genClass);
-		try {
-			writer.generatePojo();
-		} catch (ClassNotFoundException | NoSuchFieldException | SecurityException | IOException e) {
-			e.printStackTrace();
-		}
+		return genClass;		
+		
 	}
 }

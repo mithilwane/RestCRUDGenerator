@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
+import com.responsyve.codegen.domain.CodeGenClass;
 import com.responsyve.codegen.generator.CodeWriter;
 import com.responsyve.codegen.generator.XMLFileParser;
 
@@ -17,18 +18,23 @@ import com.responsyve.codegen.generator.XMLFileParser;
  *
  */
 public class App {
-	
-	public static void main(String[] args) throws IOException {
+
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
-		// String folder = args[0];
-		String folder = "C:/Users/1370096/eworkspace/restcrudgenerator/testFiles";
-		Files.list(Paths.get(folder)).forEach(file -> {
-			CodeWriter writer = new CodeWriter(folder + File.separator + "generated");
-			XMLFileParser parser = new XMLFileParser(file.toString(), writer);
+		String inputfolder = "C:/Users/1370096/eworkspace/restcrudgenerator/testFiles";
+		String outfolder = "C:/Users/1370096/eworkspace/restcrudgenerator/generated";
+		Files.list(Paths.get(inputfolder)).forEach(file -> {
+			CodeWriter writer = new CodeWriter(outfolder);
+			XMLFileParser parser = new XMLFileParser(file.toString());
 			try {
-				parser.parseFile();
+				CodeGenClass cgclass = parser.parseFile();
+				writer.setCgclass(cgclass);
+				writer.generatePojo();
+				writer.setupVelocityEngine();
+				writer.generateRepository();
+				writer.generateService();
 				//parser.printFile();	
-			} catch (JAXBException e) {
+			} catch (JAXBException | ClassNotFoundException | NoSuchFieldException | SecurityException | IOException e) {
 				e.printStackTrace();
 			}
 		});
