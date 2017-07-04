@@ -28,6 +28,8 @@ public class CodeWriter {
 	TypeSpec classSpec, repoClassSpec;
 
 	FieldSpec spec;
+	
+	AnnotationSpec annspec;
 
 	VelocityEngine ve;
 
@@ -53,7 +55,7 @@ public class CodeWriter {
 	public void generateRepository() throws IOException {
 		createRepositoryClass();
 	}
-	
+
 	public void generateService() throws IOException {
 		createServiceClass();
 	}
@@ -75,16 +77,32 @@ public class CodeWriter {
 				if (annotation.getAnnotationProperty() == null) {
 					classSpec = classSpec.toBuilder().addAnnotation(AnnotationSpec.builder(cls).build()).build();
 				} else {
-					annotation.getAnnotationProperty().forEach(prop -> {
-						String[] data = getFieldNameFromClass(prop.getValue());
-						try {
-							Class<?> propcls = Class.forName(data[0]);
-							classSpec = classSpec.toBuilder().addAnnotation(AnnotationSpec.builder(cls)
-									.addMember(prop.getName(), "$T.$L", propcls, data[1]).build()).build();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
+					annspec = AnnotationSpec.builder(cls).build();
+					annotation.getAnnotationProperty().forEach(prop -> {						
+						if(prop.getName().indexOf(".") > 0){
+							String[] data = getFieldNameFromClass(prop.getName());
+							try {
+								Class<?> propcls = Class.forName(data[0]);
+								annspec = annspec.toBuilder().addMember(prop.getName(), "$T.$L", propcls, data[1]).build();
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							}
+						} else if (prop.getValue().indexOf(".") > 0) {
+							String[] data = getFieldNameFromClass(prop.getValue());
+							try {
+								Class<?> propcls = Class.forName(data[0]);
+								annspec = annspec.toBuilder().addMember(prop.getName(), "$T.$L", propcls, data[1]).build();
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							}
+						} else {
+							annspec = annspec.toBuilder()
+									.addMember(prop.getName(), "$S", prop.getValue()).build();
 						}
 					});
+					
+					classSpec = classSpec.toBuilder().addAnnotation(annspec).build();
+					annspec = null;
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -195,10 +213,11 @@ public class CodeWriter {
 		vc.put("package", "com.restcrud");
 		vc.put("class", cgclass.getClassName());
 
-		FileWriter fw = new FileWriter(new File(genLocation + File.separator + cgclass.getClassName() + "Repository.java"));
+		FileWriter fw = new FileWriter(
+				new File(genLocation + File.separator + cgclass.getClassName() + "Repository.java"));
 		t.merge(vc, fw);
 	}
-	
+
 	public void createServiceClass() throws IOException {
 
 		Template t = ve.getTemplate("service.vm");
@@ -206,7 +225,8 @@ public class CodeWriter {
 		vc.put("package", "com.restcrud");
 		vc.put("class", cgclass.getClassName());
 
-		FileWriter fw = new FileWriter(new File(genLocation + File.separator + cgclass.getClassName() + "Service.java"));
+		FileWriter fw = new FileWriter(
+				new File(genLocation + File.separator + cgclass.getClassName() + "Service.java"));
 		t.merge(vc, fw);
 	}
 }

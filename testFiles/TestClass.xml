@@ -1,45 +1,30 @@
-<class name="TestClass">
+<class name="Cluster">
 	<annotations>
-		<annotation name="lombok.Data"></annotation>
-		<annotation name="javax.persistence.MappedSuperclass"></annotation>
-		<annotation name="javax.persistence.Inheritance">
-			<property name="strategy">javax.persistence.InheritanceType.TABLE_PER_CLASS</property>
+		<annotation name="javax.persistence.Entity"></annotation>
+		<annotation name="javax.persistence.SequenceGenerator">
+			<property name="name">SEQ_GEN</property>
+			<property name="sequenceName">clusterngseq</property>
+			<property name="allocationSize">1</property>
+		</annotation>
+		<annotation name="javax.persistence.Table">
+			<property name="name">cluster</property>
+			<property name="schema">negotiation</property>
 		</annotation>
 	</annotations>
 	<fields>
-		<field name="id" type="Long">
+		<field name="code" type="java.lang.String">
 			<annotations>
-				<annotation name="Id"></annotation>
-				<annotation name="GeneratedValue">
-					<property name="strategy">GenerationType.AUTO</property>			
-				</annotation>
-				<annotation name="Column">
-					<property name="name">id</property>			
+					<annotation name="javax.persistence.Column">
+					<property name="name">code</property>			
 				</annotation>
 			</annotations>
 		</field>
-		<field name="createdDate" type="Date">
+		<field name="description" type="java.lang.String">
 			<annotations>
-				<annotation name="CreatedDate"></annotation>
-				<annotation name="TemporalType">
-					<property name="TemporalType.TIMESTAMP"></property>			
-				</annotation>
-			</annotations>
-		</field>
-		<field name="deletedDate" type="Date">
-			<annotations>
-				<annotation name="DeletedDate"></annotation>
-				<annotation name="TemporalType">
-					<property name="TemporalType.TIMESTAMP"></property>			
-				</annotation>
-			</annotations>
-		</field>
-		<field name="active" type="Boolean">
-			<annotations>
-				<annotation name="Column">
-					<property name="name">active</property>			
+					<annotation name="javax.persistence.Column">
+					<property name="name">description</property>			
 				</annotation>
 			</annotations>
 		</field>
 	</fields>
-</class>
+</class>  
