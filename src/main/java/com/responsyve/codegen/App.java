@@ -23,8 +23,9 @@ public class App {
 
 		String inputfolder = "C:/Users/1370096/Documents/eworkspace/restcrudgenerator/testFiles";
 		String outfolder = "C:/Users/1370096/Documents/eworkspace/restcrudgenerator/generated";
+		String packagename="predix.ge.rss";
 		Files.list(Paths.get(inputfolder)).forEach(file -> {
-			CodeWriter writer = new CodeWriter(outfolder);
+			CodeWriter writer = new CodeWriter(outfolder,packagename);
 			XMLFileParser parser = new XMLFileParser(file.toString());
 			try {
 				CodeGenClass cgclass = parser.parseFile();
