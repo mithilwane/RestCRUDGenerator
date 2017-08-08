@@ -1,4 +1,4 @@
-package $package.service;
+package $packageserv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import $package.domain.$class;
-import $package.repository.$classRepository;
+import $domain;
+import $repository;
 
 @RestController
 @RequestMapping(value = "/$class")
@@ -50,7 +50,7 @@ public class $classService {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<$class> getById(@PathVariable("id") Long id) {
 		$class entity = ($class) repository.findOne(id);
-		if (company == null) {
+		if (entity == null) {
 			logger.debug("Entity with id " + id + " does not exists");
 			return new ResponseEntity<$class>(HttpStatus.NOT_FOUND);
 		}
