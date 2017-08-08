@@ -1,4 +1,4 @@
-package $package.repository;
+package $packagerep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import $package.domain.$class;
+import $domain;
 
 @Transactional
 public interface $classRepository extends extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
