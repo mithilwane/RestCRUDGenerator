@@ -22,7 +22,8 @@ import com.squareup.javapoet.TypeSpec;
 public class CodeWriter {
 
 	private String genLocation;
-
+	private String packagename;
+	
 	private CodeGenClass cgclass;
 
 	TypeSpec classSpec, repoClassSpec;
@@ -41,8 +42,9 @@ public class CodeWriter {
 		this.cgclass = cgclass;
 	}
 
-	public CodeWriter(String location) {
+	public CodeWriter(String location, String packagename) {
 		this.genLocation = location;
+		this.packagename = packagename;
 	}
 
 	public void generatePojo() throws ClassNotFoundException, NoSuchFieldException, SecurityException, IOException {
@@ -61,7 +63,7 @@ public class CodeWriter {
 	}
 
 	public void writeFile(String className, TypeSpec spec) throws IOException {
-		JavaFile javaFile = JavaFile.builder("com.restcrud.domain", spec).build();
+		JavaFile javaFile = JavaFile.builder("com."+ packagename +".domain.", spec).build();
 		javaFile.writeTo(new File(genLocation));
 	}
 
@@ -210,23 +212,41 @@ public class CodeWriter {
 
 		Template t = ve.getTemplate("repository.vm");
 		VelocityContext vc = new VelocityContext();
-		vc.put("package", "com.restcrud");
+		vc.put("packagerep", "com."+ packagename +".repository");
+		vc.put("domain", "com."+ packagename +".domain."+cgclass.getClassName());
+		vc.put("classRepository", cgclass.getClassName()+"Repository");
 		vc.put("class", cgclass.getClassName());
+		
 
-		FileWriter fw = new FileWriter(
-				new File(genLocation + File.separator + cgclass.getClassName() + "Repository.java"));
+		File repFile = new File(genLocation + File.separator + 
+				"com" + File.separator + packagename.replace(".", "/") +
+				File.separator + "repository" + File.separator +
+				cgclass.getClassName() + "Repository.java");
+		repFile.getParentFile().mkdirs();
+		FileWriter fw = new FileWriter(repFile);
 		t.merge(vc, fw);
+		fw.close();
+		
 	}
 
 	public void createServiceClass() throws IOException {
 
 		Template t = ve.getTemplate("service.vm");
 		VelocityContext vc = new VelocityContext();
-		vc.put("package", "com.restcrud");
+		vc.put("packageserv", "com."+ packagename +".service");
+		vc.put("domain", "com."+ packagename +".domain."+cgclass.getClassName());
+		vc.put("repository", "com."+ packagename +".repository."+cgclass.getClassName()+"Repository");
+		vc.put("classRepository", cgclass.getClassName()+"Repository");
+		vc.put("classService", cgclass.getClassName()+"Service");
 		vc.put("class", cgclass.getClassName());
 
-		FileWriter fw = new FileWriter(
-				new File(genLocation + File.separator + cgclass.getClassName() + "Service.java"));
+		File servFile = new File(genLocation + File.separator +
+				"com" + File.separator + packagename.replace(".", "/") +
+				File.separator + "service" + File.separator +
+				cgclass.getClassName() + "Service.java"); 
+		servFile.getParentFile().mkdirs();
+		FileWriter fw = new FileWriter(servFile);
 		t.merge(vc, fw);
+		fw.close();
 	}
 }
