@@ -63,7 +63,7 @@ public class CodeWriter {
 	}
 
 	public void writeFile(String className, TypeSpec spec) throws IOException {
-		JavaFile javaFile = JavaFile.builder("com."+ packagename +".domain.", spec).build();
+		JavaFile javaFile = JavaFile.builder("com."+ packagename +".domain", spec).build();
 		javaFile.writeTo(new File(genLocation));
 	}
 
