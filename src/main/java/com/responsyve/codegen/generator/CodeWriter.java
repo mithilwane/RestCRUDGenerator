@@ -98,8 +98,13 @@ public class CodeWriter {
 								e.printStackTrace();
 							}
 						} else {
-							annspec = annspec.toBuilder()
-									.addMember(prop.getName(), "$S", prop.getValue()).build();
+							if(null == prop.getType()){
+								annspec = annspec.toBuilder()
+										.addMember(prop.getName(), "$S", prop.getValue()).build();
+							}else if(prop.getType().equals("int")){
+								annspec = annspec.toBuilder()
+										.addMember(prop.getName(), prop.getValue()).build();
+							}
 						}
 					});
 					

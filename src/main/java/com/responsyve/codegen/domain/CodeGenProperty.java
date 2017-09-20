@@ -16,6 +16,9 @@ public class CodeGenProperty {
 	@XmlAttribute(name="name")
 	private String name;
 	
+	@XmlAttribute(name="type")
+	private String type;
+	
 	@XmlValue
 	private String value;
 	

@@ -4,7 +4,7 @@
 		<annotation name="javax.persistence.SequenceGenerator">
 			<property name="name">SEQ_GEN</property>
 			<property name="sequenceName">clusterngseq</property>
-			<property name="allocationSize">1</property>
+			<property name="allocationSize" type="int">1</property>
 		</annotation>
 		<annotation name="javax.persistence.Table">
 			<property name="name">cluster</property>
